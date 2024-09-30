@@ -1,10 +1,14 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+// C2: import từ node module
+// import bootstrap from 'bootstrap'
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+
+
+import App from './App'
+
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  //jsx : đối tượng thẻ UI của reactjs
+  //Chỉ nên có 1 component
+  <App/>
 )
