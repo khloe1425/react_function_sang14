@@ -2,6 +2,10 @@ import React from 'react'
 import HeaderHome from './components/HeaderHome'
 import CardProduct from './components/CardProduct'
 import Home from './components/baitap1/Home'
+import DataBinding from './databinding/DataBinding'
+import DemoEventHandler from './eventHandler/DemoEventHandler'
+import ConditionalRendering from './conditionalRendering/ConditionalRendering'
+import DemoState from './state/DemoState'
 
 //Component chính 
 const App = () => {
@@ -9,18 +13,15 @@ const App = () => {
     return (
         //Fragment : không bị lỗi cú pháp react và không tạo dư thẻ div
         <>
-            <Home />
-            <div className='container'>
-                <h1>Hello React</h1>
-                {/* đặt tên in hoa chữ đầu để nhấn mạnh component tự tạo */}
-                <HeaderHome />
-                <HeaderHome></HeaderHome>
-                <CardProduct />
-                <CardProduct />
-                <CardProduct />
+            <div className="container">
+                {/* <DataBinding /> */}
+                {/* <DemoEventHandler/> */}
+                {/* <ConditionalRendering/> */}
+                <DemoState/>
             </div>
+
         </>
-        
+
     )
 }
 
