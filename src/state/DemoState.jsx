@@ -41,9 +41,9 @@ const DemoState = () => {
 
     // Render UI => chỉ chạy 1 lần khi load web 
     // style inline của react nhận vào object (độ ưu tiên code cao, ít thuộctính css, giá trị thuộc cần thay đổi )
-    let styleObject ={
+    let styleObject = {
         fontSize: "20px",
-        color:"red"
+        color: "red"
     }
     return (
         <>
@@ -84,12 +84,15 @@ const DemoState = () => {
             </nav>
 
             <p style={styleObject} >Test</p>
-            <p style={{ fontSize:`${fs}px`, color:"Red" }} >Test</p>
-            <button className='btn btn-success' onClick={() => { 
-                    setFontSize(fs + 1)
+            <p style={{ fontSize: `${fs}px`, color: "Red" }} >Test</p>
+            <button className='btn btn-success' onClick={() => {
+                setFontSize(fs + 1)
 
-             }}>+</button>
-            <button className='btn btn-danger'>-</button>
+            }}>+</button>
+            <button className='btn btn-danger' onClick={() => {
+                setFontSize(fs - 1)
+
+            }}   >-</button>
         </>
 
 
