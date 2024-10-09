@@ -9,6 +9,7 @@ import DemoState from './state/DemoState'
 import ChangeAvatar from './state/ChangeAvatar'
 import ChangeCar from './state/ChangeCar'
 import DemoProps from './props/DemoProps'
+import ShoesShop from './props/ShoesShop/ShoesShop'
 
 //Component chính 
 const App = () => {
@@ -19,7 +20,9 @@ const App = () => {
             <div className="container py-5">
                {/* <ChangeAvatar/>
                <ChangeCar/> */}
-               <DemoProps/>
+               {/* <DemoProps/> */}
+
+               <ShoesShop/>
             </div>
 
         </>
