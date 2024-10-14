@@ -10,7 +10,8 @@ import ChangeAvatar from './state/ChangeAvatar'
 import ChangeCar from './state/ChangeCar'
 import DemoProps from './props/DemoProps'
 import ShoesShop from './props/ShoesShop/ShoesShop'
-import BaiTapXemCT from './props/XemChiTiet/BaiTapXemCT'
+import BaiTapXemCT from './props/ShoppingCart/BaiTapXemCT'
+// import BaiTapXemCT from './props/XemChiTiet/BaiTapXemCT'
 
 //Component chính 
 const App = () => {
@@ -19,7 +20,7 @@ const App = () => {
         //Fragment : không bị lỗi cú pháp react và không tạo dư thẻ div
         <>
             <div className="container py-5">
-                <BaiTapXemCT/>
+               <BaiTapXemCT/>
             </div>
 
         </>
