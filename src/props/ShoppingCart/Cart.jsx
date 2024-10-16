@@ -1,9 +1,9 @@
 import React from 'react'
 
 const Cart = (props) => {
-   
+
     let { arrCart } = props
-   
+
     let renderCart = () => {
         return arrCart.map((productCart, index) => {
             return <tr key={`cart-${productCart.maSP}`}>
@@ -13,12 +13,20 @@ const Cart = (props) => {
                 </td>
                 <td>{productCart.tenSP}</td>
                 <td>
-                    <button onClick={() => { 
+                    <button onClick={() => {
 
                         props.changeSL(productCart.maSP, 1)
 
-                     }} className='btn btn-success'>+</button>
-                    <span> {productCart.soLuong} </span>
+                    }} className='btn btn-success'>+</button>
+                    <input value={productCart.soLuong} type="number" style={{ width: "50px" }} className='form-control d-inline mx-2' onChange={(e) => {
+                        //Phải xét lại state để user thấy dữ liệu đang gõ
+                        // console.log(e.target.value)
+
+                        props.changeInput(e.target.value, productCart.maSP)
+
+                    }} />
+
+                    {/* <span> {productCart.soLuong} </span> */}
                     <button onClick={() => {
 
                         props.changeSL(productCart.maSP, -1)
@@ -30,7 +38,10 @@ const Cart = (props) => {
                 </td>
                 <td>{(productCart.giaBan * productCart.soLuong).toLocaleString()}</td>
                 <td>
-                    <button className='btn btn-danger'>Xóa</button>
+                    <button onClick={() => {
+                        props.xoaSP(productCart.maSP)
+
+                    }} className='btn btn-danger'>Xóa</button>
                 </td>
             </tr>
 

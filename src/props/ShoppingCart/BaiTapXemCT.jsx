@@ -86,23 +86,94 @@ const BaiTapXemCT = () => {
         })
 
         if (proFind) {
-            //tìm thấy
+            //?tìm thấy
 
-            // 1 -1 => 0 <=0
-            if (proFind.soLuong + sl <= 0) {
-                console.log(proFind.soLuong)
-                proFind.soLuong = 1
-                // setArrCart(newArrCart)
+            proFind.soLuong += sl
+            if (proFind.soLuong < 1) {
+                // alert("Số lượng tối thiểu là 1")
+                // proFind.soLuong = 1
+
+                alert("Số lượng tối thiểu là 1. Bạn muốn xóa không?")
+                xoaSP(maSP)
             } else {
-                proFind.soLuong += sl => 0
-
+                setArrCart(newArrCart)
             }
+
+            //? // 1 -1 => 0 <=0
+            // if (proFind.soLuong + sl <= 0) {
+            //     console.log(proFind.soLuong)
+            //     proFind.soLuong = 1
+            //     // setArrCart(newArrCart)
+            // } else {
+            //     proFind.soLuong += sl => 0
+
+            // }
+
         }
-        setArrCart(newArrCart)
 
 
 
     }
+
+    // input: maSP
+    let xoaSP = (maSPXoa) => {
+        console.log(maSPXoa)
+        // B1: tìm sp cần xóa dựa vào mã (for, find, findIndex)
+        // B2 Xóa sp (split)
+
+        // filter: lọc các sản phẩm muốn giữ lại =>  mã sp !=  maSPXoa => mảng mới
+        // sản phảm muốn loại (muốn xóa): mã sp ==  maSPXoa 
+
+        let newArrCart = arrCart.filter((product) => {
+            return product.maSP !== maSPXoa
+        })
+
+        setArrCart(newArrCart)
+    }
+
+    //TH1: tính tổng số lượng mặt hàng => arrCart.length 
+    //TH2: tổng số lượng tất cả sản phẩm => tổng của sp.soLuong
+    let tinhTongSL = () => {
+        // duyệt để tính tổng (map, for, reduce)
+
+        //? reduce => trả về kết quả tính toán
+        //? reduce(hàm xử lý tính, giá trị ban đầu của biến tổng )
+        // let sumFinal = arrCart.reduce((sumTerm, productCart, index) => {
+        //     sumTerm += productCart.soLuong
+        //     return sumTerm
+        // }, 0)
+
+        // return sumFinal
+
+        return arrCart.reduce((sumTerm, productCart, index) => sumTerm += productCart.soLuong, 0)
+
+    }
+
+    let tinhTongTien = () => {
+
+        // let tongTien = arrCart.reduce((tong, productCart) => {  
+        //     tong += productCart.soLuong * productCart.giaBan
+        //     return tong
+        // }, 0)
+
+        // return tongTien
+
+        return arrCart.reduce((tong, productCart) => tong += productCart.soLuong * productCart.giaBan, 0)
+
+
+    }
+
+    let changeInput = (valueSL, maSP) => {
+        console.log(valueSL, maSP)
+        let spFind = arrCart.find(productCart => productCart.maSP == maSP)
+
+        if (spFind) {
+            spFind.soLuong = valueSL
+        }
+        let newArrCart = [...arrCart]
+        setArrCart(newArrCart)
+    }
+
 
     let showDetail = (newPhoneObj) => {
         setPhoneObj(newPhoneObj)
@@ -120,13 +191,15 @@ const BaiTapXemCT = () => {
 
     }
 
+
     return (
         <>
             <h1>Bài tập shopping cart</h1>
+            <p className='alert alert-info w-25'>Số lượng : {tinhTongSL()}  - Tổng tiền: {tinhTongTien().toLocaleString()}</p>
             <DanhSachPhone renderPhoneList={renderPhoneList} />
             <TablePhone phoneObj={phoneObj} />
 
-            <Cart changeSL={changeSL} arrCart={arrCart} />
+            <Cart changeInput={changeInput} xoaSP={xoaSP} changeSL={changeSL} arrCart={arrCart} />
 
         </>
 
@@ -134,3 +207,15 @@ const BaiTapXemCT = () => {
 }
 
 export default BaiTapXemCT
+
+
+
+
+// Rút gọn arrow function
+// 1. chỉ có 1 tham số => bỏ dấu ()
+// let myFunc= first => { 
+//     console.log(first)
+//  }
+
+// 2. chỉ có 1 lệnh return trong hàm => bỏ dấu { }, bỏ từ return
+// let myFunc2 = first => first
