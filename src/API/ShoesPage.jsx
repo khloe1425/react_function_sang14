@@ -1,19 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const ShoesPage = () => {
 
-    // https://apistore.cybersoft.edu.vn/api/Product
-
-    /**
-     * C1: JS thuần - promise -> fetch() -> async/await
-     * C2: Axios
-     */
-
-    /**
-     * Load được data từ API lên UI => state (render lại UI có data)
-     * State kiểu dữ liệu ? => []
-     */
+    
     let [arrShoes, setArrShoes] = useState([])
 
     let getAPI = () => {
@@ -34,8 +24,25 @@ const ShoesPage = () => {
 
     }
 
+    // async/await
+    let getAPIJS = async () => {
+        // try {
+        let res = await fetch("https://apistore.cybersoft.edu.vn/api/Product")
+        console.log(res) //object
+        let data = await res.json()
+        console.log(data)
+        setArrShoes(data.content)
+        // } catch (error) {
+        // console.log(error)
+        // }
 
-   
+    }
+
+
+    //onload => call getAPIJS() 
+
+
+
     let renderShoes = () => {
         return arrShoes.map((shoes) => {
             return <div className="col-4" key={`product - ${shoes.id}`} >
@@ -51,16 +58,86 @@ const ShoesPage = () => {
         })
     }
 
-    // Hàm render sẽ được gọi lại khi state thay đổi
+
+
+    /**
+     * useEffect => xử lý gọi hàm cho phù hợp với nghiệp vụ
+     * ? trước khi render (Chưa load UI)
+     * ? render (load UI)
+     * ? sau khi render (đã load xong UI)
+     */
+
+    // Mounting - Component load lên lần đầu
+    //* useEffect(param1, param2)
+    //* Chỉ có param1  =>  // sử dụng với các thư viên js cần UI load xong để gắn tính năng hiện ứng (không setState)
+    useEffect(() => { 
+       //=> chạy function sau khi HTML render xong và khi setState được gọi   
+        console.log('Sau khi render useEffect 1') 
+        // call thư viện carousel, popup, backtotop, wowjs, aos (hiệu ứng load content)
+
+        //! getAPI() => setState => Updating => render lại UI
+     })
+
+     console.log("mounting - trước render") //chạy khi load compoent lần đầu
+
+    //*  Dùng param1 , param2 [] (có các dependency) - mảng rỗng => setState (có render lại UI)
+    //Updating - Component render lại UI khi state thay đổi
+    useEffect(() => { 
+        console.log('Sau khi render useEffect 2') 
+        getAPI()
+     }, []) // chỉ chạy 1 lần
+
+
+   
+    //Render
     return (
         <>
-            <button onClick={getAPI} className='btn btn-info'>Get API</button>
+            <button onClick={getAPIJS} className='btn btn-info'>Get API</button>
             <h2>ShoesPage</h2>
             <div className="row">
                 {renderShoes()}
             </div>
         </>
     )
+
+
+
+
+
 }
 
 export default ShoesPage
+
+
+
+
+
+/**
+ * JS
+ */
+
+// let getData = () => { 
+//?     //call api
+// ?    // hiển thị lên UI
+//     content = "<div class='col-4'></div><div class='col-4'></div>"
+//     document.querySelector("id").innerHTML = content
+//  }
+
+//  getData()
+
+/**
+ * JS - Thời điểm gọi hàm (code thực hiện)
+ */
+
+// onready (chỉ mới có HTML, chưa load css-js) => chỉ chạy đúng nếu có sẵn file HTML UI đầy đủ
+// getData()
+    //! JS1 => tạo thẻ carousel
+    //! JS2 => thêm tính năng vô thẻ carousel
+
+//onload (load đầy đủ HTML, css-js)
+//* JS1 => tạo thẻ carousel
+//* JS2 => thêm tính năng vô thẻ carousel
+
+// React  => onload
+//! setState => render lại UI
+//! => gọi getAPIJS() thêm 1 lần nữa

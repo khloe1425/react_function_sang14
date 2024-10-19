@@ -12,6 +12,7 @@ import DemoProps from './props/DemoProps'
 import ShoesShop from './props/ShoesShop/ShoesShop'
 import BaiTapXemCT from './props/ShoppingCart/BaiTapXemCT'
 import ShoesPage from './API/ShoesPage'
+import LoginForm from './form/LoginForm'
 // import BaiTapXemCT from './props/XemChiTiet/BaiTapXemCT'
 
 //Component chính 
@@ -21,7 +22,7 @@ const App = () => {
         //Fragment : không bị lỗi cú pháp react và không tạo dư thẻ div
         <>
             <div className="container py-5">
-               <ShoesPage/>
+               <LoginForm/>
             </div>
 
         </>
