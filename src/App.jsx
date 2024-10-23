@@ -14,20 +14,48 @@ import BaiTapXemCT from './props/ShoppingCart/BaiTapXemCT'
 import ShoesPage from './API/ShoesPage'
 import LoginForm from './form/LoginForm'
 import LoginFormik from './form/LoginFormik'
-// import BaiTapXemCT from './props/XemChiTiet/BaiTapXemCT'
+
+//Cấu hình react router dom
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import Login from './pages/Login'
+import Contact from './pages/Contact'
+import Register from './pages/Register'
+import HeaderRoute from './components/HeaderRoute'
+import HomeTemplate from './Templates/HomeTemplate'
+import FormTemplate from './Templates/FormTemplate'
+import Page404 from './pages/Page404'
 
 //Component chính 
 const App = () => {
-    //Chỉ đc return 1 object jsx
-    return (
-        //Fragment : không bị lỗi cú pháp react và không tạo dư thẻ div
-        <>
-            <div className="container py-5">
-                {/* <LoginForm/> */}
-                <LoginFormik />
-            </div>
 
-        </>
+    return (
+        <BrowserRouter>
+            {/* <HeaderRoute/> */}
+
+            <Routes>
+                {/* http://127.0.0.1:5173/contact */}
+                <Route path='' element={<HomeTemplate />} >
+                    {/* <Route path='' element={<HomePage/>} ></Route> */}
+                    <Route index element={<HomePage />} ></Route>
+                    <Route path='home' element={<HomePage />} ></Route>
+                    <Route path='contact' element={<Contact />} ></Route>
+                    <Route path='*' element={<Page404 />}></Route>
+                </Route>
+
+                {/* http://127.0.0.1:5173/user/login */}
+                <Route path='user' element={<FormTemplate />}>
+                    <Route path='login' element={<Login />} ></Route>
+                    <Route path='register' element={<Register />} ></Route>
+                    {/* <Route path='*' element={<Page404 />}></Route> */}
+                    <Route path='*' element={<Navigate to='./login' />}></Route>
+                </Route>
+
+
+            </Routes>
+        </BrowserRouter>
+
+
 
     )
 }

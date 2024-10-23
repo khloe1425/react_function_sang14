@@ -3,6 +3,7 @@ import { useFormik } from 'formik'; // get value
 import * as Yup from 'yup';// validation
 
 const LoginFormik = () => {
+    // 2 state : values, errors
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -11,7 +12,9 @@ const LoginFormik = () => {
             country:'VN'
         },
         validationSchema: Yup.object({
-            email: Yup.string().required("Email bắt buộc phải nhập").email("Email chưa đúng định dạng")
+            email: Yup.string().required("Email bắt buộc phải nhập").email("Email chưa đúng định dạng"),
+            password: Yup.string().required("Password bắt buộc nhập").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,12}$/,"Mật khẩu không đúng định dạng")
+             
         }),
         onSubmit:(values) => { 
             console.log(values)
@@ -19,7 +22,7 @@ const LoginFormik = () => {
          }
     })
 
-
+    // password: Yup.string().required("Password bắt buộc nhập").min(6, "Mật khẩu từ 6-12 ký tự").max(12, "Mật khẩu từ 6-12 ký tự")
 
     return (
         <>
@@ -33,7 +36,8 @@ const LoginFormik = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Password</label>
-                    <input onChange={formik.handleChange} data-type='password' type="password" className="form-control" name="password" placeholder="Enter password" />
+                    <input onChange={formik.handleChange} onBlur={formik.handleBlur} data-type='password' type="password" className="form-control" name="password" placeholder="Enter password" />
+                    {formik.errors.password ? <p className='text-danger'>{formik.errors.password}</p> : null}
 
                 </div>
                 <div className="mb-3">
