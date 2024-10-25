@@ -25,6 +25,11 @@ import HeaderRoute from './components/HeaderRoute'
 import HomeTemplate from './Templates/HomeTemplate'
 import FormTemplate from './Templates/FormTemplate'
 import Page404 from './pages/Page404'
+import AdminTemplate from './Templates/AdminTemplate'
+import Dashboard from './pages/Dashboard'
+import ProductManagement from './pages/ProductManagement'
+import CustomerManagement from './pages/CustomerManagement'
+import Detail from './pages/Detail'
 
 //Component chính 
 const App = () => {
@@ -40,6 +45,10 @@ const App = () => {
                     <Route index element={<HomePage />} ></Route>
                     <Route path='home' element={<HomePage />} ></Route>
                     <Route path='contact' element={<Contact />} ></Route>
+                    <Route path='detail'>
+                        <Route path=':pid' element={<Detail/>}></Route>
+                    </Route>
+
                     <Route path='*' element={<Page404 />}></Route>
                 </Route>
 
@@ -49,6 +58,14 @@ const App = () => {
                     <Route path='register' element={<Register />} ></Route>
                     {/* <Route path='*' element={<Page404 />}></Route> */}
                     <Route path='*' element={<Navigate to='./login' />}></Route>
+                </Route>
+
+                {/* http://127.0.0.1:5173/admin/dashboard */}
+                <Route path='admin' element={<AdminTemplate />}>
+                    <Route path='dashboard' element={<Dashboard />} ></Route>
+                    <Route path='product' element={<ProductManagement />} ></Route>
+                    <Route path='customer' element={<CustomerManagement />} ></Route>
+                    <Route path='*' element={<Navigate to='./dashboard' />}></Route>
                 </Route>
 
 
