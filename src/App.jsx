@@ -30,6 +30,8 @@ import Dashboard from './pages/Dashboard'
 import ProductManagement from './pages/ProductManagement'
 import CustomerManagement from './pages/CustomerManagement'
 import Detail from './pages/Detail'
+import Search from './pages/Search'
+import AddProduct from './pages/ProductManagement/AddProduct'
 
 //Component chính 
 const App = () => {
@@ -48,6 +50,7 @@ const App = () => {
                     <Route path='detail'>
                         <Route path=':pid' element={<Detail/>}></Route>
                     </Route>
+                    <Route path='search' element={<Search />}></Route>
 
                     <Route path='*' element={<Page404 />}></Route>
                 </Route>
@@ -64,6 +67,7 @@ const App = () => {
                 <Route path='admin' element={<AdminTemplate />}>
                     <Route path='dashboard' element={<Dashboard />} ></Route>
                     <Route path='product' element={<ProductManagement />} ></Route>
+                    <Route path='add-product' element={<AddProduct />} ></Route>
                     <Route path='customer' element={<CustomerManagement />} ></Route>
                     <Route path='*' element={<Navigate to='./dashboard' />}></Route>
                 </Route>
