@@ -1,8 +1,6 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-
-
-
+import React, { useEffect, useState } from 'react'
+import { NavLink, useSearchParams } from 'react-router-dom'
+import axios from 'axios'
 /**
  * UI: 
  * + button new product
@@ -15,16 +13,86 @@ import { NavLink } from 'react-router-dom'
  * 4/ Cập nhật sp 
  */
 const ProductManagement = () => {
+  //Call API để get product list khi load
+  let [arrProduct, setArrProduct] = useState([])
+
+  let [search, setSearch] = useSearchParams()
+  //B3: lấy kw từ url
+  let kw = search.get("productName")
+
+  // B1: lấy dữ liệu từ form
+  let handleInput = (e) => {
+    console.log(e.target.value)
+    //B2: đưa keyword tìm kiếm lên url
+    setSearch({
+      productName: e.target.value
+    })
+  }
+
+  let handleSubmit = (e) => {
+    e.preventDefault()
+    //*C1: Gọi API sau khi submit => không bị call API nhiều lần
+    getAPISearch() // chạy khi submit => load sp cần tìm
+  }
+
+
+
+  let getAPI = () => {
+    // GET request for remote image in node.js
+    axios({
+      method: 'get',
+      url: 'https://apistore.cybersoft.edu.vn/api/Product'
+    }).then((response) => {
+      console.log(response.data.content)
+
+      setArrProduct(response.data.content)
+
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+  let getAPISearch = async () => {
+    let url = ''
+    if (kw) {
+      // kw có => đang muốn search => sp cần tìm
+      console.log("Load sp tìm")
+      url = `https://apistore.cybersoft.edu.vn/api/Product/?keyword=${kw}`
+    } else {
+      // load trang lần đầu => tất cả sp
+      console.log("Load tất cả")
+      url = 'https://apistore.cybersoft.edu.vn/api/Product'
+
+    }
+    let res = await fetch(url)
+    let data = await res.json()
+
+    setArrProduct(data.content)
+  }
+
+ 
+  //* C2 Gọi API khi dữ liệu keyword đổi => gọi APi nhiều lần => ảnh hưởng server/ gây lag ở FE (render lại UI nhiều lần)
+  // useEffect(() => {
+  //   getAPISearch()
+  // }, [kw]) // chạy lại hàm khi kw đổi
+
+  //* C3: gõ search => hiển thi sp tìm 
+  // Xử lý code thuần ở FE => duyệt arrProduct bằng vòng lặp (for, map) =>  so sánh và tự tìm sp theo keyword (dùng thuật toán tìm kiếm)
+
+  useEffect(() => {
+    getAPISearch()
+  }, []) // chạy 1 lần khi load => load tất cả
+
+
   return (
     <>
       <h2>ProductManagement</h2>
       <NavLink to={"/admin/add-product"} className='btn btn-warning'>New Product</NavLink>
-      <form style={{width:"30%"}} className='mt-3' >
+      <form onSubmit={handleSubmit} style={{ width: "30%" }} className='mt-3' >
         <div className="input-group mb-3">
-          <input type="text" className="form-control" placeholder="Enter keyword" />
+          <input onChange={handleInput} type="text" className="form-control" placeholder="Enter product name" />
           <button type='submit' className="input-group-text" id="search">Search</button>
         </div>
-
       </form>
       <div>
         <div className="table-responsive">
@@ -42,54 +110,29 @@ const ProductManagement = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <input type="checkbox" className="form-check-input" />
-                </td>
-                <td>Product 3</td>
-                <td>
-                  <img src="product3.jpg" width={50} height={50} className="img-thumbnail" />
-                </td>
-                <td>4999</td>
-                <td>A</td>
-                <td>
-                  <a href="#" className="text-decoration-none text-danger">Edit</a> |
-                  <a href="#" className="text-decoration-none text-danger">Delete</a> |
-                  <a href="#" className="text-decoration-none text-danger">View detail</a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" className="form-check-input" />
-                </td>
-                <td>Product 2</td>
-                <td>
-                  <img src="product2.jpg" width={50} height={50} className="img-thumbnail" />
-                </td>
-                <td>3999</td>
-                <td>B</td>
-                <td>
-                  <a href="#" className="text-decoration-none text-danger">Edit</a> |
-                  <a href="#" className="text-decoration-none text-danger">Delete</a> |
-                  <a href="#" className="text-decoration-none text-danger">View detail</a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" className="form-check-input" />
-                </td>
-                <td>Product 1</td>
-                <td>
-                  <img src="product1.jpg" width={50} height={50} className="img-thumbnail" />
-                </td>
-                <td>2999</td>
-                <td>A</td>
-                <td>
-                  <a href="#" className="text-decoration-none text-danger">Edit</a> |
-                  <a href="#" className="text-decoration-none text-danger">Delete</a> |
-                  <a href="#" className="text-decoration-none text-danger">View detail</a>
-                </td>
-              </tr>
+              {
+                arrProduct?.map((product) => {
+                  let arrCate = JSON.parse(product.categories)
+                  return <tr key={`pro-${product.id}`}>
+                    <td>
+                      <input type="checkbox" className="form-check-input" />
+                    </td>
+                    <td>{product.name}</td>
+                    <td>
+                      <img src={product.image} width={50} height={50} className="img-thumbnail" />
+                    </td>
+                    <td>{product.price}</td>
+                    <td>{arrCate[0].category}</td>
+                    <td>
+                      <NavLink to={`/admin/edit-product/${product.id}`} className="text-decoration-none text-danger">Edit</NavLink> |
+                      <a href="#" className="text-decoration-none text-danger">Delete</a> |
+                      <a href="#" className="text-decoration-none text-danger">View detail</a>
+                    </td>
+                  </tr>
+                })
+              }
+
+
             </tbody>
           </table>
         </div>
