@@ -33,6 +33,7 @@ import Detail from './pages/Detail'
 import Search from './pages/Search'
 import AddProduct from './pages/ProductManagement/AddProduct'
 import EditProduct from './pages/ProductManagement/EditProduct'
+import ProductForm from './pages/ProductManagement/ProductForm'
 
 //Component chính 
 const App = () => {
@@ -68,6 +69,11 @@ const App = () => {
                 <Route path='admin' element={<AdminTemplate />}>
                     <Route path='dashboard' element={<Dashboard />} ></Route>
                     <Route path='product' element={<ProductManagement />} ></Route>
+                    <Route path='product-form' element={<ProductForm/>}></Route>
+                    <Route path='product-form'>
+                        <Route path=':productID' element={<ProductForm />}></Route>
+                    </Route>
+                    
                     <Route path='add-product' element={<AddProduct />} ></Route>
                     <Route path='edit-product'>
                         <Route path=':productID' element={<EditProduct />}></Route>

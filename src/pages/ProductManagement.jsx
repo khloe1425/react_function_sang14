@@ -41,7 +41,7 @@ const ProductManagement = () => {
     // GET request for remote image in node.js
     axios({
       method: 'get',
-      url: 'https://apistore.cybersoft.edu.vn/api/Product'
+      url: 'https://apitraining.cybersoft.edu.vn/api/ProductApi/getall'
     }).then((response) => {
       console.log(response.data.content)
 
@@ -57,20 +57,21 @@ const ProductManagement = () => {
     if (kw) {
       // kw có => đang muốn search => sp cần tìm
       console.log("Load sp tìm")
-      url = `https://apistore.cybersoft.edu.vn/api/Product/?keyword=${kw}`
+      url = `https://apitraining.cybersoft.edu.vn/api/ProductApi/getall/?keyword=${kw}`
     } else {
       // load trang lần đầu => tất cả sp
       console.log("Load tất cả")
-      url = 'https://apistore.cybersoft.edu.vn/api/Product'
+      url = 'https://apitraining.cybersoft.edu.vn/api/ProductApi/getall'
 
     }
     let res = await fetch(url)
     let data = await res.json()
-
-    setArrProduct(data.content)
+    console.log(data)
+    // setArrProduct(data.content)
+    setArrProduct(data)
   }
 
- 
+
   //* C2 Gọi API khi dữ liệu keyword đổi => gọi APi nhiều lần => ảnh hưởng server/ gây lag ở FE (render lại UI nhiều lần)
   // useEffect(() => {
   //   getAPISearch()
@@ -112,20 +113,29 @@ const ProductManagement = () => {
             <tbody>
               {
                 arrProduct?.map((product) => {
-                  let arrCate = JSON.parse(product.categories)
+                  // let arrCate = JSON.parse(product.categories)
                   return <tr key={`pro-${product.id}`}>
                     <td>
                       <input type="checkbox" className="form-check-input" />
                     </td>
                     <td>{product.name}</td>
                     <td>
-                      <img src={product.image} width={50} height={50} className="img-thumbnail" />
+                      <img src={product.img} width={50} height={50} className="img-thumbnail" />
                     </td>
                     <td>{product.price}</td>
-                    <td>{arrCate[0].category}</td>
+                    {/* <td>{arrCate[0].category}</td> */}
+                    <td>{product.type}</td>
                     <td>
                       <NavLink to={`/admin/edit-product/${product.id}`} className="text-decoration-none text-danger">Edit</NavLink> |
-                      <a href="#" className="text-decoration-none text-danger">Delete</a> |
+                      <button onClick={async () => {
+                        console.log(product.id)
+                        if (window.confirm("Bạn có chắc muốn xóa?")) {
+                          let res = await axios.delete(`https://apitraining.cybersoft.edu.vn/api/ProductApi/delete/${product.id}`)
+                          alert("Xóa thành công")
+                          getAPISearch()
+                        }
+
+                      }} className="text-decoration-none text-danger">Delete</button> |
                       <a href="#" className="text-decoration-none text-danger">View detail</a>
                     </td>
                   </tr>
