@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink, useSearchParams } from 'react-router-dom'
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 /**
  * UI: 
@@ -15,6 +15,10 @@ import axios from 'axios'
 const ProductManagement = () => {
   //Call API để get product list khi load
   let [arrProduct, setArrProduct] = useState([])
+
+  let location = useLocation()
+  console.log(location)
+
 
   let [search, setSearch] = useSearchParams()
   //B3: lấy kw từ url
@@ -89,6 +93,7 @@ const ProductManagement = () => {
     <>
       <h2>ProductManagement</h2>
       <NavLink to={"/admin/add-product"} className='btn btn-warning'>New Product</NavLink>
+      <NavLink to={"/admin/product-form"} className='btn btn-warning'>New Product Form</NavLink>
       <form onSubmit={handleSubmit} style={{ width: "30%" }} className='mt-3' >
         <div className="input-group mb-3">
           <input onChange={handleInput} type="text" className="form-control" placeholder="Enter product name" />
@@ -127,6 +132,8 @@ const ProductManagement = () => {
                     <td>{product.type}</td>
                     <td>
                       <NavLink to={`/admin/edit-product/${product.id}`} className="text-decoration-none text-danger">Edit</NavLink> |
+                      <NavLink to={`/admin/product-form/${product.id}`} className="text-decoration-none text-danger">Edit Form</NavLink> |
+
                       <button onClick={async () => {
                         console.log(product.id)
                         if (window.confirm("Bạn có chắc muốn xóa?")) {

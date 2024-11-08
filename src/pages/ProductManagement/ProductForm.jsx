@@ -5,6 +5,8 @@ import axios from 'axios'
 
 const ProductForm = () => {
 
+    const navigate = useNavigate();
+
     const match = useMatch('/admin/product-form/:productID')
     console.log(match) //null => add, ngược lại => edit
 
@@ -22,11 +24,56 @@ const ProductForm = () => {
             type: "Apple",
             deleted: false //sản phẩm được xóa hay chưa
         },
-        onSubmit: async (values) => {
-            console.log(values)
+        onSubmit: async (data) => {
+            console.log(data)
+
+            //Giả sử ban đầu là Add
+            let url = "https://apitraining.cybersoft.edu.vn/api/ProductApi/create"
+            let method = "POST"
+            if(isEdit){
+                // Nếu là edit => update giá tri của url và method thành Edit
+                url = `https://apitraining.cybersoft.edu.vn/api/ProductApi/update/${match.params.productID}`
+                method = "PUT"
+            }
+
+            // let res = await axios({
+            //     url: url,
+            //     method:method,
+            //     data: data
+            // })
+            // console.log(res.data)
+
+            //Object literal (JS-ES6)
+            //Nếu tên thuộc tính trùng tên biến giá trị => rút gọn giữ lại tên thuộc tính
+            let res = await axios({
+                url,
+                method,
+                data
+            })
+            console.log(res.data)
+
+            navigate('/admin/product', {state:"abc"}) //truyền ngầm giá trị
 
         }
     })
+
+
+    let getProByID = async () => {
+        let res = await fetch(`https://apitraining.cybersoft.edu.vn/api/ProductApi/get/${match.params.productID}`)
+        let data = await res.json()
+        proFormik.setValues(data)
+    }
+
+    useEffect(() => { 
+        //Khi load component lần đầu => kiểm tra có phải edit ko (khi chuyển từ component khác vào component form)
+        if (isEdit){
+            getProByID()
+        }
+       
+    }, [isEdit]) // gọi lại API khi isEdit thay đổi (khi đang thay đổi ở component hiện tai)
+
+
+
 
     return (
         <div>
